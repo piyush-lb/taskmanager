@@ -1,0 +1,31 @@
+export const ROLES = {
+  ADMIN: 'ADMIN',
+  USER: 'USER',
+};
+
+export const PERMISSIONS = {
+  CREATE_TASK: 'CREATE_TASK',
+  EDIT_TASK: 'EDIT_TASK',
+  DELETE_TASK: 'DELETE_TASK',
+  ASSIGN_TASK: 'ASSIGN_TASK',
+
+  // TODO: can add these later if needed
+  // VIEW_TASK: 'VIEW_TASK',
+  // MANAGE_USERS: 'MANAGE_USERS',
+};
+
+export const ROLE_PERMISSIONS = {
+  [ROLES.ADMIN]: [
+    PERMISSIONS.CREATE_TASK,
+    PERMISSIONS.EDIT_TASK,
+    PERMISSIONS.DELETE_TASK,
+    PERMISSIONS.ASSIGN_TASK,
+  ],
+  [ROLES.USER]: [
+    PERMISSIONS.ASSIGN_TASK,
+
+    // TODO: can add these later if needed
+    // PERMISSIONS.VIEW_TASK,
+    // PERMISSIONS.MANAGE_USERS,
+  ],
+};

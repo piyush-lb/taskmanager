@@ -1,18 +1,55 @@
 import React, { useState } from 'react';
 import { Plus, Edit2, Trash2 } from 'lucide-react';
+import { PERMISSIONS } from '../auth/roles';
 
-const TasksPage = ({ tasks, setTasks }) => {
+const TasksPage = ({ tasks, setTasks , hasPermission}) => {
+
   const [filter, setFilter] = useState('all');
   
   const filteredTasks = filter === 'all' 
     ? tasks 
     : tasks.filter(task => task.status === filter);
 
+
+  const handleAddTask = () => {
+    if (!hasPermission(PERMISSIONS.CREATE_TASK)) {
+      alert('User does not have permission to add tasks');
+      return;
+    }
+    // TODO: Implement add task functionality
+    alert('You have permission to add tasks, functionality not implemented yet');
+  };
+
+  const handleEditTask = (taskId) => {
+    if (!hasPermission(PERMISSIONS.EDIT_TASK)) {
+      alert('User does not have permission to edit tasks');
+      return;
+    }
+    // TODO: Implement edit task functionality
+    alert('You have permission to edit tasks, functionality not implemented yet');
+  };
+
+  const handleDeleteTask = (taskId) => {  
+    if (!hasPermission(PERMISSIONS.DELETE_TASK)) {
+      alert('User does not have permission to delete tasks');
+      return;
+    }
+    // TODO: Implement delete task functionality
+    alert('You have permission to delete tasks, functionality not implemented yet');
+  };
+
   const updateTaskStatus = (taskId, newStatus) => {
+    if (!hasPermission(PERMISSIONS.ASSIGN_TASK)) {
+      alert('User does not have permission to assign tasks');
+      return;
+    }
     setTasks(tasks.map(task => 
       task.id === taskId ? { ...task, status: newStatus } : task
     ));
+     // TODO: Implement assign task functionality
   };
+
+  
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -21,7 +58,7 @@ const TasksPage = ({ tasks, setTasks }) => {
           <h2 className="text-2xl font-bold text-gray-900">Tasks</h2>
           <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center space-x-2">
             <Plus className="w-4 h-4" />
-            <span>Add Task</span>
+            <span onClick={handleAddTask}>Add Task</span>
           </button>
         </div>
         
@@ -95,10 +132,10 @@ const TasksPage = ({ tasks, setTasks }) => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <div className="flex space-x-2">
-                    <button className="text-indigo-600 hover:text-indigo-900">
+                    <button className="text-indigo-600 hover:text-indigo-900" onClick={handleEditTask}>
                       <Edit2 className="w-4 h-4" />
                     </button>
-                    <button className="text-red-600 hover:text-red-900">
+                    <button className="text-red-600 hover:text-red-900" onClick={handleDeleteTask}>
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>

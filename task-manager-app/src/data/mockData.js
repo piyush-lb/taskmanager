@@ -3,13 +3,13 @@ export const mockUsers = [
       email: 'admin@example.com', 
       password: 'admin123', 
       name: 'John Doe', 
-      role: 'Admin' 
+      role: 'ADMIN' 
     },
     { 
       email: 'user@example.com', 
       password: 'user123', 
       name: 'Jane Smith', 
-      role: 'User' 
+      role: 'USER' 
     }
   ];
   
