@@ -5,6 +5,9 @@ import Dashboard from './components/Dashboard';
 import TasksPage from './components/TasksPage';
 import SettingsPage from './components/SettingsPage';
 import { mockTasks } from './data/mockData';
+import { AuthProvider } from './auth/AuthContext';
+import { ProtectedRoute } from './auth/ProtectedRoute';
+import { PERMISSIONS } from './auth/roles';
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -26,33 +29,46 @@ const App = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Navigation 
-        currentUser={currentUser}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        setCurrentUser={setCurrentUser}
-      />
-      {currentPage === 'dashboard' && (
-        <Dashboard 
-          currentUser={currentUser} 
-          tasks={tasks} 
-        />
-      )}
-      {currentPage === 'tasks' && (
-        <TasksPage 
-          tasks={tasks} 
-          setTasks={setTasks} 
-        />
-      )}
-      {currentPage === 'settings' && (
-        <SettingsPage 
+    <AuthProvider userRole={currentUser.role}>
+      <div className="min-h-screen bg-gray-50">
+        <Navigation 
           currentUser={currentUser}
-          userSettings={userSettings}
-          setUserSettings={setUserSettings}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          setCurrentUser={setCurrentUser}
         />
-      )}
-    </div>
+        {currentPage === 'dashboard' && (
+            <Dashboard 
+              currentUser={currentUser} 
+              tasks={tasks} 
+            />
+        )}
+        {/* Added ProtectedRoute to handle task management permissions in TasksPage */}
+        {/* Later can do for rest of tabs if needed */}
+        {currentPage === 'tasks' && (
+          <ProtectedRoute 
+            requiredPermissions={[
+              PERMISSIONS.CREATE_TASK,
+              PERMISSIONS.EDIT_TASK,
+              PERMISSIONS.DELETE_TASK,
+              PERMISSIONS.ASSIGN_TASK,
+            ]}
+          >
+            <TasksPage 
+              tasks={tasks} 
+              setTasks={setTasks} 
+            />
+          </ProtectedRoute>
+        )}
+        {currentPage === 'settings' && (
+            <SettingsPage 
+              currentUser={currentUser}
+              userSettings={userSettings}
+              setUserSettings={setUserSettings}
+            />
+        )}
+      </div>
+    </AuthProvider>
   );
 };
 
